@@ -30,6 +30,9 @@ jobs:
       - name: Check Docker Hub Username
         run: echo "${{ secrets.DOCKERHUB_USERNAME }}"
 
+      - name: Check Docker Hub Token
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}"
+
       - name: Log in to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
