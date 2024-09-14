@@ -21,8 +21,8 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    # - name: Run tests
-    #   run: npm test
+    - name: Run tests
+      run: npm test
 
     - name: Build Docker image
       run: docker build -t myapp:${{ github.sha }} .
@@ -30,17 +30,10 @@ jobs:
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-     - name: Tag Docker image with branch and short SHA
-      run: |
-        branch_name=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
-        short_sha=$(echo "${{ github.sha }}" | cut -c1-7)
-        docker tag myapp:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${branch_name}-${short_sha}
-
     - name: Push Docker image to Docker Hub
       run: |
-        branch_name=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
-        short_sha=$(echo "${{ github.sha }}" | cut -c1-7)
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${branch_name}-${short_sha}
+        docker tag myapp:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/myapp:v${{ github.sha }}
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }}
 
   # deploy:
   #   runs-on: ubuntu-latest
