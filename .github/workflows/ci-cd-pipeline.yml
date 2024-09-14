@@ -52,7 +52,7 @@ jobs:
     - name: SSH into EC2 and pull & run Docker image
       uses: appleboy/ssh-action@v0.1.2
       with:
-        host: ${{ secrets.EC2_HOST }}
+        host: 35.170.73.239
         username: ec2-user
         key: ${{ secrets.EC2_KEY }}
         script: |
