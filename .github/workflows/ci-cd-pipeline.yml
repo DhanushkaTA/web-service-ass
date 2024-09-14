@@ -32,8 +32,8 @@ jobs:
 
       - name: Push Docker image to Docker Hub
         run: |
-          docker tag myapp:v${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/myapp:v${{ github.sha }}
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }}
+          docker tag myapp:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/myapp:v${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:v${{ github.sha }}
 
   # deploy:
   #   runs-on: ubuntu-latest
