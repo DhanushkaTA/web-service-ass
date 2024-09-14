@@ -32,7 +32,8 @@ jobs:
 
     - name: Push Docker image to Docker Hub
       run: |
-        docker tag myapp:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }}
+        branch_name=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
+        docker tag myapp:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${branch_name}-${{ github.sha::7 }}
         docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }}
 
   # deploy:
