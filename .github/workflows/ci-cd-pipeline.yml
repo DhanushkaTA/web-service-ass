@@ -30,11 +30,17 @@ jobs:
     - name: Log in to Docker Hub
       run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
+     - name: Tag Docker image with branch and short SHA
+      run: |
+        branch_name=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
+        short_sha=$(echo "${{ github.sha }}" | cut -c1-7)
+        docker tag myapp:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${branch_name}-${short_sha}
+
     - name: Push Docker image to Docker Hub
       run: |
         branch_name=$(echo "${{ github.ref }}" | sed 's/refs\/heads\///')
-        docker tag myapp:${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${branch_name}-${{ github.sha::7 }}
-        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }}
+        short_sha=$(echo "${{ github.sha }}" | cut -c1-7)
+        docker push ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${branch_name}-${short_sha}
 
   # deploy:
   #   runs-on: ubuntu-latest
