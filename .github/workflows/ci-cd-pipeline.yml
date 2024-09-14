@@ -41,22 +41,22 @@ jobs:
           docker tag myapp:${{ github.sha }} dhanushkata102/myapp:v${{ github.sha }}
           docker push dhanushkata102/myapp:v${{ github.sha }}
 
-  # deploy:
-  #   runs-on: ubuntu-latest
-  #   needs: build
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
 
-  #   steps:
-  #   - name: Checkout code
-  #     uses: actions/checkout@v2
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
 
-  #   - name: SSH into EC2 and pull & run Docker image
-  #     uses: appleboy/ssh-action@v0.1.2
-  #     with:
-  #       host: ${{ secrets.EC2_HOST }}
-  #       username: ec2-user
-  #       key: ${{ secrets.EC2_KEY }}
-  #       script: |
-  #         docker stop myapp || true
-  #         docker rm myapp || true
-  #         docker pull ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }}
-  #         docker run -d -p 80:80 --name myapp ${{ secrets.DOCKERHUB_USERNAME }}/myapp:${{ github.sha }}
+    - name: SSH into EC2 and pull & run Docker image
+      uses: appleboy/ssh-action@v0.1.2
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ec2-user
+        key: ${{ secrets.EC2_KEY }}
+        script: |
+          docker stop myapp || true
+          docker rm myapp || true
+          docker pull dhanushkata102/myapp:${{ github.sha }}
+          docker run -d -p 80:80 --name myapp dhanushkata102/myapp:${{ github.sha }}
