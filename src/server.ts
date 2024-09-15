@@ -3,7 +3,7 @@ import process from "process";
 import http from "http";
 import cors from "cors"
 
-const port = process.env.PORT || 8000
+const port = process.env.PORT || 80
 
 //invoke express
 const app = express();
